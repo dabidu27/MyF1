@@ -1,7 +1,12 @@
 from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 from models import Drivers, DriversWithPoints, RaceData
-from get_data import getStandingsData, getChampionshipStandings, getLastRace
+from get_data import (
+    getStandingsData,
+    getChampionshipStandings,
+    getLastRace,
+    getNextRace,
+)
 
 
 app = FastAPI()
@@ -55,3 +60,10 @@ async def fetchLastRaceData():
 
     lastRaceData = await getLastRace()
     return RaceData(name=lastRaceData[0], date=lastRaceData[1])
+
+
+@app.get("/next_race/data", status_code=status.HTTP_200_OK, response_model=RaceData)
+async def fetchNextRaceData():
+
+    nextRaceData = await getNextRace()
+    return RaceData(name=nextRaceData[0], date=nextRaceData[1])

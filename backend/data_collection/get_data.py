@@ -20,6 +20,10 @@ async def getLastRace():
     return await asyncio.to_thread(_getLastRace)
 
 
+async def getNextRace():
+    return await asyncio.to_thread(_getNextRace)
+
+
 def _loadStandings():
 
     ergast = Ergast()
@@ -80,4 +84,18 @@ def _getLastRace():
     date = past_races.iloc[0]["raceDate"]
     date_str = date.strftime("%d %B %Y")
     name = past_races.iloc[0]["raceName"]
+    return (name, date_str)
+
+
+def _getNextRace():
+
+    ergast = Ergast()
+    races = ergast.get_race_schedule(season=2026)
+    races["raceDate"] = pd.to_datetime(races["raceDate"], utc=True)
+    now = datetime.now(timezone.utc)
+    next_races = races[races["raceDate"] >= now]
+    next_races = next_races.sort_values("raceDate", ascending=True)
+    date = next_races.iloc[0]["raceDate"]
+    date_str = date.strftime("%d %B %Y")
+    name = next_races.iloc[0]["raceName"]
     return (name, date_str)
