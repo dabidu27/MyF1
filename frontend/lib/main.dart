@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/models/DriverWithPoints.dart';
+import 'models/DriverWithPoints.dart';
 import 'models/Driver.dart';
+import 'models/RaceData.dart';
 import 'services/api_service.dart';
 
 void main() {
@@ -32,12 +33,14 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   late Future<List<Driver>> top3Future;
   late Future<List<DriverWithPoints>> top3ChampionshipFuture;
+  late Future<RaceData> lastRaceData;
 
   @override
   void initState() {
     super.initState();
     top3Future = ApiService.fetchLastRaceTop3();
     top3ChampionshipFuture = ApiService.fetchStandingsTop3();
+    lastRaceData = ApiService.fetchLastRaceData();
   }
 
   @override
@@ -118,16 +121,43 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: TextStyle(fontSize: 16, color: Colors.grey),
                     ),
                     SizedBox(height: 8),
-                    Text(
-                      "Abu Dhabi Grand Prix",
-                      style: TextStyle(
-                        fontSize: 22,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    FutureBuilder<RaceData>(
+                      future: lastRaceData,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: Center(child: CircularProgressIndicator()),
+                          );
+                        }
+
+                        if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        }
+
+                        if (!snapshot.hasData) {
+                          return Text('No data');
+                        }
+
+                        final raceData = snapshot.data!;
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              raceData.name,
+                              style: TextStyle(
+                                fontSize: 22,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(height: 6),
+                            Text(raceData.date),
+                          ],
+                        );
+                      },
                     ),
-                    SizedBox(height: 6),
-                    Text("07 December 2025"),
 
                     // // Column(
                     // //   children: [

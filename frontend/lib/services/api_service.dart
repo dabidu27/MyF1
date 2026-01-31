@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/Driver.dart';
 import '../models/DriverWithPoints.dart';
+import '../models/RaceData.dart';
 
 //we create a static class that holds the functions for our api service
 class ApiService {
@@ -53,6 +54,19 @@ class ApiService {
       return data.map((jsonMap) => DriverWithPoints.fromJson(jsonMap)).toList();
     } else {
       throw Exception("Failed to load standings");
+    }
+  }
+
+  static Future<RaceData> fetchLastRaceData() async {
+    final response = await http.get(
+      Uri.parse('http://10.0.2.2:8000/last_race/data'),
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = jsonDecode(response.body);
+      return RaceData.fromJson(data);
+    } else {
+      throw Exception("Failed to load race data");
     }
   }
 }
