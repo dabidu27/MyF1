@@ -55,4 +55,8 @@ def _loadChampionshipStandings():
     return [driver1, driver2, driver3]
 
 
-_loadChampionshipStandings()
+ergast = Ergast()
+
+races = ergast.get_race_results(season=2025)
+races_df = races.content[0]
+print(races_df)

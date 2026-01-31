@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/models/DriverWithPoints.dart';
 import 'models/Driver.dart';
 import 'services/api_service.dart';
 
@@ -30,7 +31,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late Future<List<Driver>> top3Future;
-  late Future<List<Driver>> top3ChampionshipFuture;
+  late Future<List<DriverWithPoints>> top3ChampionshipFuture;
 
   @override
   void initState() {
@@ -169,6 +170,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   driver.name,
                                   driver.team,
                                   driver.pos,
+                                  null,
                                 ),
                               )
                               .toList(),
@@ -208,7 +210,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     // ), //null first because we pass no Key key argument
                     // DriverTile(null, "Lewis Hamilton", "Ferrari", "2"),
                     // DriverTile(null, "Lando Norris", "McLaren", "3"),
-                    FutureBuilder<List<Driver>>(
+                    FutureBuilder<List<DriverWithPoints>>(
                       future: top3ChampionshipFuture,
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
@@ -236,6 +238,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   driver.name,
                                   driver.team,
                                   driver.pos,
+                                  driver.points,
                                 ),
                               )
                               .toList(),
@@ -288,6 +291,7 @@ class DriverTile extends StatelessWidget {
   final String driverName; //final is like a const in c++
   final String team;
   final String pos;
+  final String? points; //? means that this value may be null
 
   //constructor
   const DriverTile(
@@ -295,11 +299,13 @@ class DriverTile extends StatelessWidget {
     String driverName,
     String team,
     String pos,
+    String? points,
   ) //Key? key means that a key attribute is OPTIONAL (because of ?) to pass
   : //because we have final attributes, we have to use the initializer list for initialization
       driverName = driverName,
       team = team,
       pos = pos,
+      points = points,
       super(key: key); //this is a call to the base class constructor
 
   @override
@@ -318,6 +324,11 @@ class DriverTile extends StatelessWidget {
         ),
         title: Text(this.driverName),
         subtitle: Text(this.team),
+        trailing: points != null
+            ? Text(this.points!, style: TextStyle(fontSize: 16))
+            : null, //this is a conditional statement
+        //if points != null render Text(this.points!) and we use the ! to say "hey this is surely not null"
+        //if points == null render nothing
       ),
     );
   }
