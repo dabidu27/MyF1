@@ -1,7 +1,7 @@
 from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 from models import Drivers
-from get_data import getStandingsData
+from get_data import getStandingsData, getChampionshipStandings
 
 
 app = FastAPI()
@@ -20,10 +20,27 @@ app.add_middleware(
 async def getStandings():
 
     drivers = await getStandingsData()
-    driverResponse = []
+    driversResponse = []
     pos = 1
     for driver in drivers:
-        driverResponse.append(Drivers(name=driver[0], team=driver[1], pos=str(pos)))
+        driversResponse.append(Drivers(name=driver[0], team=driver[1], pos=str(pos)))
         pos += 1
 
-    return driverResponse
+    return driversResponse
+
+
+@app.get(
+    "/championship/standings",
+    status_code=status.HTTP_200_OK,
+    response_model=list[Drivers],
+)
+async def getChampionship():
+
+    drivers = await getChampionshipStandings()
+    driversResponse = []
+    pos = 1
+    for driver in drivers:
+        driversResponse.append(Drivers(name=driver[0], team=driver[1], pos=str(pos)))
+        pos += 1
+
+    return driversResponse
