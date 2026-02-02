@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import '../models/Driver.dart';
 import '../models/DriverWithPoints.dart';
 import '../models/RaceData.dart';
+import '../models/Constructor.dart';
 
 //we create a static class that holds the functions for our api service
 class ApiService {
@@ -79,6 +80,21 @@ class ApiService {
       return RaceData.fromJson(data);
     } else {
       throw Exception("Failed to load next race data");
+    }
+  }
+
+  static Future<List<Constructor>> fetchConstructorsStandings() async {
+    final response = await http.get(
+      Uri.parse('http://10.0.2.2:8000/championship/constructors/standings'),
+    );
+
+    if (response.statusCode == 200) {
+      final List data = jsonDecode(response.body);
+      return data
+          .map((constructorJsonMap) => Constructor.fromJson(constructorJsonMap))
+          .toList();
+    } else {
+      throw Exception("Failed to load constructors standings");
     }
   }
 }

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/models/Constructor.dart';
 import 'models/DriverWithPoints.dart';
 import 'models/Driver.dart';
 import 'models/RaceData.dart';
+import 'models/Constructor.dart';
 import 'services/api_service.dart';
+import 'cards.dart';
 
 void main() {
   runApp(const F1App());
@@ -33,6 +36,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   late Future<List<Driver>> top3Future;
   late Future<List<DriverWithPoints>> top3ChampionshipFuture;
+  late Future<List<Constructor>> top3ConstructorsChampionshipFuture;
   late Future<RaceData> lastRaceData;
   late Future<RaceData> nextRaceData;
 
@@ -43,6 +47,8 @@ class _HomeScreenState extends State<HomeScreen> {
     top3ChampionshipFuture = ApiService.fetchStandingsTop3();
     lastRaceData = ApiService.fetchLastRaceData();
     nextRaceData = ApiService.fetchNextRaceData();
+    top3ConstructorsChampionshipFuture =
+        ApiService.fetchConstructorsStandings();
   }
 
   @override
@@ -52,7 +58,10 @@ class _HomeScreenState extends State<HomeScreen> {
       //it provides:
       //-appBar = top bar of the app
       appBar: AppBar(
-        title: Text("F1 App"),
+        title: Text(
+          "F1 App",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+        ),
         centerTitle: true,
       ), //we added a text title in the app bar and we centered it
       //-a body = main content of the app
@@ -109,10 +118,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         }
 
                         final raceData = snapshot.data!;
-
-                        if (raceData.dateComputations.isEmpty) {
-                          return Text("Invalid race date");
-                        }
 
                         final raceDate = DateTime.parse(
                           raceData.dateComputations,
@@ -280,40 +285,86 @@ class _HomeScreenState extends State<HomeScreen> {
                     // ), //null first because we pass no Key key argument
                     // DriverTile(null, "Lewis Hamilton", "Ferrari", "2"),
                     // DriverTile(null, "Lando Norris", "McLaren", "3"),
-                    FutureBuilder<List<DriverWithPoints>>(
-                      future: top3ChampionshipFuture,
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Padding(
-                            padding: const EdgeInsets.all(12),
-                            child: Center(child: CircularProgressIndicator()),
-                          );
-                        }
+                    SizedBox(
+                      height: 220,
+                      child: PageView(
+                        children: [
+                          FutureBuilder<List<DriverWithPoints>>(
+                            future: top3ChampionshipFuture,
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return Padding(
+                                  padding: const EdgeInsets.all(12),
+                                  child: Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                );
+                              }
 
-                        if (snapshot.hasError) {
-                          return Text("Error: ${snapshot.error}");
-                        }
+                              if (snapshot.hasError) {
+                                return Text("Error: ${snapshot.error}");
+                              }
 
-                        if (!snapshot.hasData) {
-                          return Text("No data");
-                        }
+                              if (!snapshot.hasData) {
+                                return Text("No data");
+                              }
 
-                        final drivers = snapshot.data!;
-                        return Column(
-                          children: drivers
-                              .map(
-                                (driver) => DriverTile(
-                                  null,
-                                  driver.name,
-                                  driver.team,
-                                  driver.pos,
-                                  driver.points,
-                                ),
-                              )
-                              .toList(),
-                        );
-                      },
+                              final drivers = snapshot.data!;
+                              return ListView(
+                                children: drivers
+                                    .map(
+                                      (driver) => DriverTile(
+                                        null,
+                                        driver.name,
+                                        driver.team,
+                                        driver.pos,
+                                        driver.points,
+                                      ),
+                                    )
+                                    .toList(),
+                              );
+                            },
+                          ),
+
+                          FutureBuilder<List<Constructor>>(
+                            future: top3ConstructorsChampionshipFuture,
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return Padding(
+                                  padding: const EdgeInsets.all(12),
+                                  child: Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                );
+                              }
+
+                              if (snapshot.hasError) {
+                                return Text("Error: ${snapshot.error}");
+                              }
+
+                              if (!snapshot.hasData) {
+                                return Text("No data");
+                              }
+
+                              final constructors = snapshot.data!;
+
+                              return ListView(
+                                children: constructors
+                                    .map(
+                                      (constructor) => ConstructorTile(
+                                        teamName: constructor.name,
+                                        points: constructor.points,
+                                        pos: constructor.pos,
+                                      ),
+                                    )
+                                    .toList(),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -350,55 +401,6 @@ class _HomeScreenState extends State<HomeScreen> {
             // ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class DriverTile extends StatelessWidget {
-  //class DriverTile inherits from StatelessWidget, this class becomes a reusable Widget
-  //class attributes
-  final String driverName; //final is like a const in c++
-  final String team;
-  final String pos;
-  final String? points; //? means that this value may be null
-
-  //constructor
-  const DriverTile(
-    Key? key,
-    String driverName,
-    String team,
-    String pos,
-    String? points,
-  ) //Key? key means that a key attribute is OPTIONAL (because of ?) to pass
-  : //because we have final attributes, we have to use the initializer list for initialization
-      driverName = driverName,
-      team = team,
-      pos = pos,
-      points = points,
-      super(key: key); //this is a call to the base class constructor
-
-  @override
-  Widget build(BuildContext context) {
-    //BuildContext context is pass to Widget methods for FLutter to know the hierarchy of widgets
-
-    return Card(
-      //Card is a predefined visual container with rounded corners
-      margin: EdgeInsets.symmetric(vertical: 6),
-      child: ListTile(
-        //child means this is inside the Card
-        //ListTile is a prebuild row layout format with: leading text - the circle in our case, title, subtitle, trailing text and onTap which is a click handler
-        leading: CircleAvatar(
-          backgroundColor: Colors.redAccent,
-          child: Text(this.pos), //the text is inside the circle
-        ),
-        title: Text(this.driverName),
-        subtitle: Text(this.team),
-        trailing: points != null
-            ? Text(this.points!, style: TextStyle(fontSize: 16))
-            : null, //this is a conditional statement
-        //if points != null render Text(this.points!) and we use the ! to say "hey this is surely not null"
-        //if points == null render nothing
       ),
     );
   }
