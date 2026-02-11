@@ -3,6 +3,7 @@ import pandas as pd
 import asyncio
 from fastf1.ergast import Ergast
 from datetime import datetime, timezone
+from tenacity import retry, stop_after_attempt, wait_exponential
 
 f1.Cache.enable_cache("fastf1_cache")
 
@@ -28,6 +29,7 @@ async def getConstructorsChampionshipStandings():
     return await asyncio.to_thread(_loadConstructorsChampionshipStandings)
 
 
+@retry(stop=stop_after_attempt(3), wait=wait_exponential(min=1, max=5))
 def _loadStandings():
 
     ergast = Ergast()
@@ -50,6 +52,7 @@ def _loadStandings():
     return [driver1, driver2, driver3]
 
 
+@retry(stop=stop_after_attempt(3), wait=wait_exponential(min=1, max=5))
 def _loadChampionshipStandings():
 
     ergast = Ergast()
@@ -77,6 +80,7 @@ def _loadChampionshipStandings():
     return [driver1, driver2, driver3]
 
 
+@retry(stop=stop_after_attempt(3), wait=wait_exponential(min=1, max=5))
 def _loadConstructorsChampionshipStandings():
 
     ergast = Ergast()
@@ -88,6 +92,7 @@ def _loadConstructorsChampionshipStandings():
     return [team1, team2, team3]
 
 
+@retry(stop=stop_after_attempt(3), wait=wait_exponential(min=1, max=5))
 def _getLastRace():
 
     ergast = Ergast()
@@ -105,6 +110,7 @@ def _getLastRace():
     return (name, date_str, date_computations, time_computations)
 
 
+@retry(stop=stop_after_attempt(3), wait=wait_exponential(min=1, max=5))
 def _getNextRace():
 
     ergast = Ergast()
