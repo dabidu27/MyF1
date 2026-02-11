@@ -77,68 +77,95 @@ class ConstructorTile extends StatelessWidget {
   }
 }
 
-class StandingsCard extends StatefulWidget {
+class StandingsCard extends StatelessWidget {
   final List<DriverWithPoints> standings;
 
   const StandingsCard({super.key, required this.standings});
 
   @override
-  State<StandingsCard> createState() => _StandingsCardState();
-}
-
-class _StandingsCardState extends State<StandingsCard> {
-  bool isExtended = false;
-
-  @override
   Widget build(BuildContext context) {
+    final preview = standings.take(3).toList();
     return GestureDetector(
       onTap: () {
-        setState(() {
-          isExtended = !isExtended;
-        });
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) {
+              return FullStandingsScreen(standings: standings);
+            },
+          ),
+        );
       },
 
-      child: AnimatedSize(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-        child: ListView(children: _buildStandings()),
+      child: ListView(
+        children: preview
+            .map(
+              (driver) => DriverTile(
+                null,
+                driver.name,
+                driver.team,
+                driver.pos,
+                driver.points,
+              ),
+            )
+            .toList(),
       ),
     );
   }
+}
 
-  List<Widget> _buildStandings() {
-    final standingsToShow = isExtended
-        ? widget.standings
-        : widget.standings.take(1);
+class FullStandingsScreen extends StatelessWidget {
+  final List<DriverWithPoints> standings;
 
-    return [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Text(
-            "Standings",
-            style: TextStyle(
-              fontSize: 22,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
+  const FullStandingsScreen({super.key, required this.standings});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("Standings")),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
           ),
 
-          Icon(isExtended ? Icons.expand_less : Icons.expand_more),
-        ],
-      ),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
 
-      const SizedBox(height: 8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Standings",
+                  style: TextStyle(
+                    fontSize: 22,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
 
-      ...standingsToShow.map(
-        (driver) => DriverTile(
-          null,
-          driver.name,
-          driver.team,
-          driver.pos,
-          driver.points,
+                const SizedBox(height: 8),
+
+                Expanded(
+                  child: ListView(
+                    children: standings
+                        .map(
+                          (driver) => DriverTile(
+                            null,
+                            driver.name,
+                            driver.team,
+                            driver.pos,
+                            driver.points,
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
-    ];
+    );
   }
 }
