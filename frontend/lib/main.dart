@@ -292,15 +292,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "Standings",
-                      style: TextStyle(
-                        fontSize: 22,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-
                     // DriverTile(
                     //   null,
                     //   "Max Verstappen",
@@ -341,19 +332,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               }
 
                               final drivers = snapshot.data!;
-                              return ListView(
-                                children: drivers
-                                    .map(
-                                      (driver) => DriverTile(
-                                        null,
-                                        driver.name,
-                                        driver.team,
-                                        driver.pos,
-                                        driver.points,
-                                      ),
-                                    )
-                                    .toList(),
-                              );
+                              return StandingsCard(standings: drivers);
                             },
                           ),
 

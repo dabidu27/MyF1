@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/models/DriverWithPoints.dart';
 
 class DriverTile extends StatelessWidget {
   //class DriverTile inherits from StatelessWidget, this class becomes a reusable Widget
@@ -73,5 +74,71 @@ class ConstructorTile extends StatelessWidget {
         trailing: Text(this.points, style: TextStyle(fontSize: 16)),
       ),
     );
+  }
+}
+
+class StandingsCard extends StatefulWidget {
+  final List<DriverWithPoints> standings;
+
+  const StandingsCard({super.key, required this.standings});
+
+  @override
+  State<StandingsCard> createState() => _StandingsCardState();
+}
+
+class _StandingsCardState extends State<StandingsCard> {
+  bool isExtended = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          isExtended = !isExtended;
+        });
+      },
+
+      child: AnimatedSize(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+        child: ListView(children: _buildStandings()),
+      ),
+    );
+  }
+
+  List<Widget> _buildStandings() {
+    final standingsToShow = isExtended
+        ? widget.standings
+        : widget.standings.take(1);
+
+    return [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Text(
+            "Standings",
+            style: TextStyle(
+              fontSize: 22,
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+
+          Icon(isExtended ? Icons.expand_less : Icons.expand_more),
+        ],
+      ),
+
+      const SizedBox(height: 8),
+
+      ...standingsToShow.map(
+        (driver) => DriverTile(
+          null,
+          driver.name,
+          driver.team,
+          driver.pos,
+          driver.points,
+        ),
+      ),
+    ];
   }
 }
