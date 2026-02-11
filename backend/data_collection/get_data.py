@@ -44,7 +44,7 @@ def _loadStandings():
     session = f1.get_session(2025, round, "Race")
     session.load()
 
-    top3 = session.results[:3][["FullName", "TeamName"]]
+    top3 = session.results[["FullName", "TeamName"]]
     driver1 = (top3.iloc[0, 0], top3.iloc[0, 1])
     driver2 = (top3.iloc[1, 0], top3.iloc[1, 1])
     driver3 = (top3.iloc[2, 0], top3.iloc[2, 1])
@@ -57,27 +57,20 @@ def _loadChampionshipStandings():
 
     ergast = Ergast()
     standings = ergast.get_driver_standings(season=2025)
-    standings_df = standings.content[0][:3][
+    standings_df = standings.content[0][
         ["givenName", "familyName", "constructorNames", "points"]
     ]
     # print(standings_df[["position", "givenName", "familyName", "constructorNames"]])
-    driver1 = (
-        f"{standings_df.iloc[0, 0]} {standings_df.iloc[0, 1]}",
-        standings_df.iloc[0, 2][0],
-        standings_df.iloc[0, 3],
-    )
-    driver2 = (
-        f"{standings_df.iloc[1, 0]} {standings_df.iloc[1, 1]}",
-        standings_df.iloc[1, 2][0],
-        standings_df.iloc[1, 3],
-    )
-    driver3 = (
-        f"{standings_df.iloc[2, 0]} {standings_df.iloc[2, 1]}",
-        standings_df.iloc[2, 2][0],
-        standings_df.iloc[2, 3],
-    )
+    drivers = [
+        (
+            f"{row.givenName} {row.familyName}",
+            row.constructorNames[0],
+            row.points,
+        )
+        for row in standings_df.itertuples(index=False)
+    ]
 
-    return [driver1, driver2, driver3]
+    return drivers
 
 
 @retry(stop=stop_after_attempt(3), wait=wait_exponential(min=1, max=5))
