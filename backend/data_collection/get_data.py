@@ -78,11 +78,13 @@ def _loadConstructorsChampionshipStandings():
 
     ergast = Ergast()
     standings = ergast.get_constructor_standings(season=2025)
-    standings_df = standings.content[0][:3][["points", "constructorName"]]
-    team1 = (standings_df.iloc[0, 1], int(standings_df.iloc[0, 0]))
-    team2 = (standings_df.iloc[1, 1], int(standings_df.iloc[1, 0]))
-    team3 = (standings_df.iloc[2, 1], int(standings_df.iloc[2, 0]))
-    return [team1, team2, team3]
+    standings_df = standings.content[0][["points", "constructorName"]]
+    teams = [
+        (row.constructorName, int(row.points))
+        for row in standings_df.itertuples(index=False)
+    ]
+
+    return teams
 
 
 @retry(stop=stop_after_attempt(3), wait=wait_exponential(min=1, max=5))
