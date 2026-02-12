@@ -375,16 +375,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
                               final constructors = snapshot.data!;
 
-                              return ListView(
-                                children: constructors
-                                    .map(
-                                      (constructor) => ConstructorTile(
-                                        teamName: constructor.name,
-                                        points: constructor.points,
-                                        pos: constructor.pos,
-                                      ),
-                                    )
-                                    .toList(),
+                              return StandingsConstructorsCard(
+                                standings: constructors,
                               );
                             },
                           ),

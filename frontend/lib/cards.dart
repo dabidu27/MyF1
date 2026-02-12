@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/models/Constructor.dart';
 import 'package:flutter_application_1/models/DriverWithPoints.dart';
 
 class DriverTile extends StatelessWidget {
@@ -156,6 +157,93 @@ class FullStandingsScreen extends StatelessWidget {
                             driver.team,
                             driver.pos,
                             driver.points,
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class StandingsConstructorsCard extends StatelessWidget {
+  final List<Constructor> standings;
+
+  const StandingsConstructorsCard({super.key, required this.standings});
+
+  @override
+  Widget build(BuildContext context) {
+    final preview = standings.take(3).toList();
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) {
+              return FullConstuctorsStandingsScreen(standings: standings);
+            },
+          ),
+        );
+      },
+
+      child: ListView(
+        children: preview
+            .map(
+              (team) => ConstructorTile(
+                teamName: team.name,
+                points: team.points,
+                pos: team.pos,
+              ),
+            )
+            .toList(),
+      ),
+    );
+  }
+}
+
+class FullConstuctorsStandingsScreen extends StatelessWidget {
+  final List<Constructor> standings;
+  const FullConstuctorsStandingsScreen({super.key, required this.standings});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("Standings")),
+      body: Padding(
+        padding: EdgeInsets.all(16),
+
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Standings",
+                  style: TextStyle(
+                    fontSize: 22,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+
+                const SizedBox(height: 8),
+
+                Expanded(
+                  child: ListView(
+                    children: standings
+                        .map(
+                          (team) => ConstructorTile(
+                            teamName: team.name,
+                            points: team.points,
+                            pos: team.pos,
                           ),
                         )
                         .toList(),
