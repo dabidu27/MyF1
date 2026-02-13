@@ -1,4 +1,4 @@
-from fastapi import FastAPI, status, Response
+from fastapi import FastAPI, status, Response, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.encoders import jsonable_encoder
 from models import Drivers, DriversWithPoints, RaceData, ConstructorsStandings
@@ -11,11 +11,16 @@ from get_data import (
 )
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
+from fastapi_limiter import FastAPILimiter
+from fastapi_limiter.depends import RateLimiter
 from redis import asyncio as aioredis
 import json
 from cache_utils import getSecondsUntilRaceFinish
 
-app = FastAPI()
+generalLimiter = RateLimiter(
+    times=60, seconds=60
+)  # rate limiter for all endpoints => 1 request/seconds (60 requests/60 seconds)
+app = FastAPI(dependencies=[generalLimiter])
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -32,10 +37,13 @@ async def startup():
         "redis://redis:6379", encoding="utf8", decode_responses=True
     )
     FastAPICache.init(RedisBackend(redis), prefix="f1-cache")
+    await FastAPILimiter.init(redis)
 
 
 @app.get(
-    "/last_race/standings", status_code=status.HTTP_200_OK, response_model=list[Drivers]
+    "/last_race/standings",
+    status_code=status.HTTP_200_OK,
+    response_model=list[Drivers],
 )
 async def getStandings(response: Response):
     cache_key = "last_race_standings_data"
