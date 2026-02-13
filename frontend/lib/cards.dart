@@ -125,7 +125,10 @@ class FullStandingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("")),
+      appBar: AppBar(
+        title: Image.asset('assets/f1_logo.png', height: 40),
+        centerTitle: true,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Card(
@@ -217,7 +220,10 @@ class FullConstuctorsStandingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("")),
+      appBar: AppBar(
+        title: Image.asset('assets/f1_logo.png', height: 40),
+        centerTitle: true,
+      ),
       body: Padding(
         padding: EdgeInsets.all(16),
 
@@ -304,7 +310,10 @@ class FullLastRaceStandingsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("")),
+      appBar: AppBar(
+        title: Image.asset('assets/f1_logo.png', height: 40),
+        centerTitle: true,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Card(

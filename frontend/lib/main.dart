@@ -66,10 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
       //it provides:
       //-appBar = top bar of the app
       appBar: AppBar(
-        title: Text(
-          "MyF1",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-        ),
+        title: Image.asset('assets/f1_logo.png', height: 40),
         centerTitle: true,
       ), //we added a text title in the app bar and we centered it
       //-a body = main content of the app
