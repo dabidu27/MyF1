@@ -98,15 +98,17 @@ class StandingsCard extends StatelessWidget {
         );
       },
 
-      child: ListView(
+      child: Column(
         children: preview
             .map(
-              (driver) => DriverTile(
-                null,
-                driver.name,
-                driver.team,
-                driver.pos,
-                driver.points,
+              (driver) => Expanded(
+                child: DriverTile(
+                  null,
+                  driver.name,
+                  driver.team,
+                  driver.pos,
+                  driver.points,
+                ),
               ),
             )
             .toList(),
@@ -191,13 +193,15 @@ class StandingsConstructorsCard extends StatelessWidget {
         );
       },
 
-      child: ListView(
+      child: Column(
         children: preview
             .map(
-              (team) => ConstructorTile(
-                teamName: team.name,
-                points: team.points,
-                pos: team.pos,
+              (team) => Expanded(
+                child: ConstructorTile(
+                  teamName: team.name,
+                  points: team.points,
+                  pos: team.pos,
+                ),
               ),
             )
             .toList(),
