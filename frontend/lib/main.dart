@@ -6,7 +6,6 @@ import 'models/Constructor.dart';
 import 'services/api_service.dart';
 import 'services/url_launcher.dart';
 import 'cards.dart';
-import 'package:flutter/services.dart';
 
 void main() {
   runApp(const F1App());
@@ -17,14 +16,11 @@ class F1App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.light.copyWith(
-        statusBarColor: Colors.transparent,
-      ),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: const HomeScreen(),
-      ),
+    return MaterialApp(
+      title: 'MyF1',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData.dark(),
+      home: const HomeScreen(),
     );
   }
 }
