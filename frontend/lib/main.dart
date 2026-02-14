@@ -4,6 +4,7 @@ import 'models/Driver.dart';
 import 'models/RaceData.dart';
 import 'models/Constructor.dart';
 import 'services/api_service.dart';
+import 'services/url_launcher.dart';
 import 'cards.dart';
 
 void main() {
@@ -66,9 +67,13 @@ class _HomeScreenState extends State<HomeScreen> {
       //it provides:
       //-appBar = top bar of the app
       appBar: AppBar(
-        title: Image.asset('assets/f1_logo.png', height: 40),
+        title: InkWell(
+          onTap: UrlManager.openLink,
+          child: Image.asset('assets/f1_logo.png', height: 40),
+        ),
         centerTitle: true,
-      ), //we added a text title in the app bar and we centered it
+      ),
+      //we added an image title with a clickable link in the app bar and we centered it
       //-a body = main content of the app
       body: Padding(
         //every element wrapped in a Padding() will have padding space around it
