@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/Driver.dart';
@@ -60,9 +61,19 @@ class ApiService {
   }
 
   static Future<RaceData> fetchLastRaceData() async {
-    final response = await http
-        .get(Uri.parse('$apiBaseUrl/last_race/data'))
-        .timeout(const Duration(seconds: 10));
+    late http.Response
+    response; //late tells Dart: “I promise this will be initialized before use”
+    try {
+      response = await http
+          .get(Uri.parse('$apiBaseUrl/last_race/data'))
+          .timeout(const Duration(seconds: 30));
+    } on TimeoutException {
+      //if we get a timeout, we wait 3 seconds and then try the call again
+      await Future.delayed(const Duration(seconds: 3));
+      response = await http
+          .get(Uri.parse('$apiBaseUrl/last_race/data'))
+          .timeout(const Duration(seconds: 30));
+    }
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = jsonDecode(response.body);
