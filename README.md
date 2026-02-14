@@ -12,7 +12,8 @@ Full-stack Formula 1 dashboard: a Flutter frontend that consumes a FastAPI backe
 
 ## Screenshot
 
-![App screenshot](docs/Screenshot 2026-02-14 175725.png)
+![App screenshot](docs/screenshot.png)
+
 
 
 ## Project structure
