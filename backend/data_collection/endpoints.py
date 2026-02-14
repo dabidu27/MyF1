@@ -16,6 +16,7 @@ from fastapi_limiter.depends import RateLimiter
 from redis import asyncio as aioredis
 import json
 from cache_utils import getSecondsUntilRaceFinish
+import os
 
 generalLimiter = RateLimiter(
     times=60, seconds=60
@@ -33,11 +34,10 @@ app.add_middleware(
 @app.on_event("startup")
 async def startup():
 
-    redis = aioredis.from_url(
-        "redis://redis:6379", encoding="utf8", decode_responses=True
-    )
+    redisURL = os.environ("REDIS_URL")
+    redis = aioredis.from_url(redisURL, encoding="utf8", decode_responses=True)
     FastAPICache.init(RedisBackend(redis), prefix="f1-cache")
-    await FastAPILimiter.init(redis)
+    await FastAPILimiter.init(redis, identifier=lambda r: r.client.host)
 
 
 @app.get(
