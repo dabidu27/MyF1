@@ -12,9 +12,8 @@ Full-stack Formula 1 dashboard: a Flutter frontend that consumes a FastAPI backe
 
 ## Screenshot
 
-![App screenshot](docs/screenshot.png)
+![App screenshot](docs/Screenshot 2026-02-14 175725.png)
 
-Add your screenshot at `docs/screenshot.png` (any PNG works).
 
 ## Project structure
 
