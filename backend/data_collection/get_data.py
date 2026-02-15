@@ -92,10 +92,16 @@ def _loadConstructorsChampionshipStandings():
 def _getLastRace():
 
     ergast = Ergast()
-    races = ergast.get_race_schedule(season=2025)
+    races = ergast.get_race_schedule(season=2026)
     races["raceDate"] = pd.to_datetime(races["raceDate"], utc=True)
     now = datetime.now(timezone.utc)
     past_races = races[races["raceDate"] <= now]
+    if past_races.empty:
+        races = ergast.get_race_schedule(season=2025)
+        races["raceDate"] = pd.to_datetime(races["raceDate"], utc=True)
+        now = datetime.now(timezone.utc)
+        past_races = races[races["raceDate"] <= now]
+
     past_races = past_races.sort_values("raceDate", ascending=False)
     date = past_races.iloc[0]["raceDate"]
     date_str = date.strftime("%d %B %Y")
