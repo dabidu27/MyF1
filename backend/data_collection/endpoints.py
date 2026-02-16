@@ -8,6 +8,7 @@ from get_data import (
     getLastRace,
     getNextRace,
     getConstructorsChampionshipStandings,
+    getNextQuali,
 )
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
@@ -255,3 +256,37 @@ async def fetchNextRaceData(response: Response):
         dateComputations=nextRaceData[2],
         timeComputations=nextRaceData[3],
     )
+
+
+@app.get("/next_quali/data", status_code=status.HTTP_200_OK, response_model=RaceData)
+async def fetchNextQualiData(response: Response):
+
+    cache_key = "next_quali_data"
+    redis = FastAPICache.get_backend().redis
+    cached_data = await redis.get(cache_key)
+    if cached_data:
+
+        remaining_ttl = await redis.ttl(cache_key)
+        response.headers["X-Cache"] = "HIT"
+        response.headers["Cache-Control"] = f"public, max_age={remaining_ttl}"
+        return json.loads(cached_data)
+
+    nextRaceData = await getNextRace()
+    nextRaceIso = nextRaceData[2]
+    ttl_seconds = getSecondsUntilRaceFinish(nextRaceIso)
+
+    nextQualiData = await getNextQuali()
+    responseData = RaceData(
+        name=nextQualiData[0],
+        datePretty=nextQualiData[1],
+        dateComputations=nextQualiData[2],
+        timeComputations=nextQualiData[3],
+    )
+
+    await redis.set(
+        cache_key, json.dumps(jsonable_encoder(responseData)), ex=ttl_seconds
+    )
+
+    response.headers["X-Cache"] = "MISS"
+    response.headers["Cache-Control"] = f"public, max_age = {ttl_seconds}"
+    return responseData

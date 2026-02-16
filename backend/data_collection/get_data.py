@@ -29,6 +29,10 @@ async def getConstructorsChampionshipStandings():
     return await asyncio.to_thread(_loadConstructorsChampionshipStandings)
 
 
+async def getNextQuali():
+    return await asyncio.to_thread(_getNextQuali)
+
+
 @retry(stop=stop_after_attempt(3), wait=wait_exponential(min=1, max=5))
 def _loadStandings():
 
@@ -127,4 +131,22 @@ def _getNextRace():
     time = next_races.iloc[0]["raceTime"]
     time_computations = time.strftime("%H:%M:%S")
     name = next_races.iloc[0]["raceName"]
+    return (name, date_str, date_computations, time_computations)
+
+
+@retry(stop=stop_after_attempt(3), wait=wait_exponential(min=1, max=5))
+def _getNextQuali():
+    ergast = Ergast()
+    races = ergast.get_race_schedule(season=2026)
+    quali = races[["season", "round", "raceName", "qualifyingDate", "qualifyingTime"]]
+    quali["qualifyingDate"] = pd.to_datetime(quali["qualifyingDate"], utc=True)
+    now = datetime.now(timezone.utc)
+    futureQualis = quali[quali["qualifyingDate"] >= now]
+    futureQualis = futureQualis.sort_values("qualifyingDate", ascending=True)
+    date = futureQualis.iloc[0]["qualifyingDate"]
+    date_str = date.strftime("%d %B %Y")
+    date_computations = date.strftime("%Y-%m-%d")
+    time = futureQualis.iloc[0]["qualifyingTime"]
+    time_computations = time.strftime("%H:%M:%S")
+    name = futureQualis.iloc[0]["racename"]
     return (name, date_str, date_computations, time_computations)
