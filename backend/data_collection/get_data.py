@@ -148,5 +148,5 @@ def _getNextQuali():
     date_computations = date.strftime("%Y-%m-%d")
     time = futureQualis.iloc[0]["qualifyingTime"]
     time_computations = time.strftime("%H:%M:%S")
-    name = futureQualis.iloc[0]["racename"]
+    name = futureQualis.iloc[0]["raceName"]
     return (name, date_str, date_computations, time_computations)
