@@ -107,11 +107,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   //crossAxisAlignment.start = allign children to the left
                   children: [
                     Text(
-                      "Next Race",
+                      _currentPage2 == 0 ? "Next Race" : "Next Qualifying",
                       style: TextStyle(fontSize: 16, color: Colors.grey),
                     ),
                     SizedBox(
-                      height: 220,
+                      height: 130,
                       child: PageView(
                         controller: _pageController2,
                         onPageChanged: (index) {
@@ -240,7 +240,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   Text(qualiData.datePretty),
                                   SizedBox(height: 8),
                                   Text(
-                                    "Race starts in ${days} days",
+                                    "Qualifying starts in ${days} days",
                                     style: TextStyle(color: Colors.redAccent),
                                   ),
 
