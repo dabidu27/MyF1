@@ -65739,33 +65739,35 @@ s.x=A.PP()
 s.f=A.PK()},
 l(){this.y.l()
 this.aG()},
-N(a){var s,r,q,p,o,n,m=this,l=null,k=A.PT(!0,A.aeQ(!1,!0,A.Vl("assets/f1_logo.png",40),l,!0,l,l,l,l,l,l,l,l,A.aAO(),l,l,l,l)),j=A.hv(16),i=A.bE("Next Race",A.cV(l,l,B.ex,l,l,l,l,l,l,l,l,16,l,l,l,l,l,!0,l,l,l,l,l,l,l,l)),h=m.w
-h===$&&A.a()
-s=t.wp
-h=A.u0(new A.a8v(),h,s)
-r=m.x
-r===$&&A.a()
-q=t.F
-p=t.l7
-j=A.lC(new A.c6(B.bo,A.fM(A.c([i,A.jd(A.ajr(A.c([h,A.u0(new A.a8w(),r,s)],q),m.Q,new A.a8x(m)),220,l),B.dA,A.a1t(A.aeY(2,new A.a8y(m),!0,p),B.aG,B.hY,B.ab)],q),B.ag,B.aa,B.ab),l),l,new A.c7(j,B.o))
-r=A.hv(16)
-h=A.a1t(A.c([A.bE("Last Race",A.cV(l,l,B.ex,l,l,l,l,l,l,l,l,16,l,l,l,l,l,!0,l,l,l,l,l,l,l,l)),A.aeK(B.kH,l)],q),B.aG,B.hZ,B.ab)
-i=A.jd(l,8,l)
-o=m.r
-o===$&&A.a()
-s=A.u0(new A.a8z(),o,s)
-o=A.jd(l,12,l)
-n=m.d
-n===$&&A.a()
-r=A.lC(new A.c6(B.bo,A.fM(A.c([h,i,s,o,A.u0(new A.a8A(),n,t.EE)],q),B.ag,B.aa,B.ab),l),l,new A.c7(r,B.o))
-n=A.hv(16)
-o=A.a1t(A.c([A.bE("Standings",A.cV(l,l,B.i,l,l,l,l,l,l,l,l,22,l,l,B.b4,l,l,!0,l,l,l,l,l,l,l,l)),A.aeK(B.kH,l)],q),B.aG,B.hZ,B.ab)
-s=m.e
+N(a){var s,r,q,p,o,n,m,l=this,k=null,j=A.PT(!0,A.aeQ(!1,!0,A.Vl("assets/f1_logo.png",40),k,!0,k,k,k,k,k,k,k,k,A.aAO(),k,k,k,k)),i=A.hv(16),h=l.as===0?"Next Race":"Next Qualifying"
+h=A.bE(h,A.cV(k,k,B.ex,k,k,k,k,k,k,k,k,16,k,k,k,k,k,!0,k,k,k,k,k,k,k,k))
+s=l.w
 s===$&&A.a()
-s=A.u0(new A.a8B(),s,t.y7)
-i=m.f
-i===$&&A.a()
-return A.a1x(k,new A.c6(B.bo,A.Wv(A.c([j,B.vz,r,B.vz,A.lC(new A.c6(B.bo,A.fM(A.c([o,A.jd(A.ajr(A.c([s,A.u0(new A.a8C(),i,t.AF)],q),m.y,new A.a8D(m)),220,l),B.dA,A.a1t(A.aeY(2,new A.a8E(m),!0,p),B.aG,B.hY,B.ab)],q),B.ag,B.aa,B.ab),l),l,new A.c7(n,B.o))],q)),l))}}
+r=t.wp
+s=A.u0(new A.a8v(),s,r)
+q=l.x
+q===$&&A.a()
+p=t.F
+o=t.l7
+i=A.lC(new A.c6(B.bo,A.fM(A.c([h,A.jd(A.ajr(A.c([s,A.u0(new A.a8w(),q,r)],p),l.Q,new A.a8x(l)),130,k),B.dA,A.a1t(A.aeY(2,new A.a8y(l),!0,o),B.aG,B.hY,B.ab)],p),B.ag,B.aa,B.ab),k),k,new A.c7(i,B.o))
+q=A.hv(16)
+s=A.a1t(A.c([A.bE("Last Race",A.cV(k,k,B.ex,k,k,k,k,k,k,k,k,16,k,k,k,k,k,!0,k,k,k,k,k,k,k,k)),A.aeK(B.kH,k)],p),B.aG,B.hZ,B.ab)
+h=A.jd(k,8,k)
+n=l.r
+n===$&&A.a()
+r=A.u0(new A.a8z(),n,r)
+n=A.jd(k,12,k)
+m=l.d
+m===$&&A.a()
+q=A.lC(new A.c6(B.bo,A.fM(A.c([s,h,r,n,A.u0(new A.a8A(),m,t.EE)],p),B.ag,B.aa,B.ab),k),k,new A.c7(q,B.o))
+m=A.hv(16)
+n=A.a1t(A.c([A.bE("Standings",A.cV(k,k,B.i,k,k,k,k,k,k,k,k,22,k,k,B.b4,k,k,!0,k,k,k,k,k,k,k,k)),A.aeK(B.kH,k)],p),B.aG,B.hZ,B.ab)
+r=l.e
+r===$&&A.a()
+r=A.u0(new A.a8B(),r,t.y7)
+h=l.f
+h===$&&A.a()
+return A.a1x(j,new A.c6(B.bo,A.Wv(A.c([i,B.vz,q,B.vz,A.lC(new A.c6(B.bo,A.fM(A.c([n,A.jd(A.ajr(A.c([r,A.u0(new A.a8C(),h,t.AF)],p),l.y,new A.a8D(l)),220,k),B.dA,A.a1t(A.aeY(2,new A.a8E(l),!0,o),B.aG,B.hY,B.ab)],p),B.ag,B.aa,B.ab),k),k,new A.c7(m,B.o))],p)),k))}}
 A.a8x.prototype={
 $1(a){var s=this.a
 s.aB(new A.a8u(s,a))},
@@ -65799,7 +65801,7 @@ q=B.f.ds(A.RO(r).dc(new A.er(Date.now(),0,!1)).a,864e8)
 p=A.RO(r+"T"+s.d+"Z").Od()
 r=B.c.j8(B.f.k(A.afc(p)),2,"0")
 o=B.c.j8(B.f.k(A.afd(p)),2,"0")
-return A.fM(A.c([A.bE(s.a,A.cV(n,n,n,n,n,n,n,n,n,n,n,22,n,n,B.b4,n,n,!0,n,n,n,n,n,n,n,n)),A.jd(n,4,n),A.bE(s.b,n),A.jd(n,8,n),A.bE("Race starts in "+q+" days",A.cV(n,n,B.bp,n,n,n,n,n,n,n,n,n,n,n,n,n,n,!0,n,n,n,n,n,n,n,n)),A.bE(r+":"+o,A.cV(n,n,B.bp,n,n,n,n,n,n,n,n,n,n,n,n,n,n,!0,n,n,n,n,n,n,n,n))],t.F),B.ag,B.aa,B.ab)},
+return A.fM(A.c([A.bE(s.a,A.cV(n,n,n,n,n,n,n,n,n,n,n,22,n,n,B.b4,n,n,!0,n,n,n,n,n,n,n,n)),A.jd(n,4,n),A.bE(s.b,n),A.jd(n,8,n),A.bE("Qualifying starts in "+q+" days",A.cV(n,n,B.bp,n,n,n,n,n,n,n,n,n,n,n,n,n,n,!0,n,n,n,n,n,n,n,n)),A.bE(r+":"+o,A.cV(n,n,B.bp,n,n,n,n,n,n,n,n,n,n,n,n,n,n,!0,n,n,n,n,n,n,n,n))],t.F),B.ag,B.aa,B.ab)},
 $S:80}
 A.a8y.prototype={
 $1(a){var s=null,r=this.a.as===a,q=A.cR(0,250),p=r?10:6,o=r?B.bp:B.ex
