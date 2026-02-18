@@ -39,6 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late Future<List<Constructor>> top3ConstructorsChampionshipFuture;
   late Future<RaceData> lastRaceData;
   late Future<RaceData> nextRaceData;
+  late Future<RaceData> nextQualiData;
 
   @override
   void initState() {
@@ -47,12 +48,16 @@ class _HomeScreenState extends State<HomeScreen> {
     top3ChampionshipFuture = ApiService.fetchStandingsTop3();
     lastRaceData = ApiService.fetchLastRaceData();
     nextRaceData = ApiService.fetchNextRaceData();
+    nextQualiData = ApiService.fetchNextQualiData();
     top3ConstructorsChampionshipFuture =
         ApiService.fetchConstructorsStandings();
   }
 
   final PageController _pageController = PageController();
   int _currentPage = 0;
+
+  final PageController _pageController2 = PageController();
+  int _currentPage2 = 0;
 
   @override
   void dispose() {
@@ -106,70 +111,170 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: TextStyle(fontSize: 16, color: Colors.grey),
                     ),
                     SizedBox(
-                      height: 8,
-                    ), //this defines an empty box, so we basically put an empty space
-                    FutureBuilder<RaceData>(
-                      future: nextRaceData,
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Padding(
-                            padding: const EdgeInsets.all(12),
-                            child: Center(child: CircularProgressIndicator()),
-                          );
-                        }
+                      height: 220,
+                      child: PageView(
+                        controller: _pageController2,
+                        onPageChanged: (index) {
+                          setState(() {
+                            _currentPage2 = index;
+                          });
+                        },
 
-                        if (snapshot.hasError) {
-                          return Text("Error: ${snapshot.error}");
-                        }
+                        children: [
+                          FutureBuilder<RaceData>(
+                            future: nextRaceData,
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return Padding(
+                                  padding: const EdgeInsets.all(12),
+                                  child: Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                );
+                              }
 
-                        if (!snapshot.hasData) {
-                          return Text("No data");
-                        }
+                              if (snapshot.hasError) {
+                                return Text("Error: ${snapshot.error}");
+                              }
 
-                        final raceData = snapshot.data!;
+                              if (!snapshot.hasData) {
+                                return Text("No data");
+                              }
 
-                        final raceDate = DateTime.parse(
-                          raceData.dateComputations,
-                        );
-                        final now = DateTime.now();
-                        final days = raceDate.difference(now).inDays;
+                              final raceData = snapshot.data!;
 
-                        final raceStartUTC = DateTime.parse(
-                          "${raceData.dateComputations}T${raceData.timeComputations}Z",
-                        );
+                              final raceDate = DateTime.parse(
+                                raceData.dateComputations,
+                              );
+                              final now = DateTime.now();
+                              final days = raceDate.difference(now).inDays;
 
-                        final raceStartLocal = raceStartUTC
-                            .toLocal(); //conversion to local timezone is done client side (frontend), not server side (backend), because it depends on the user machine, not on the backend machine
-                        final raceStartLocalPretty =
-                            "${raceStartLocal.hour.toString().padLeft(2, '0')}:"
-                            "${raceStartLocal.minute.toString().padLeft(2, '0')}";
+                              final raceStartUTC = DateTime.parse(
+                                "${raceData.dateComputations}T${raceData.timeComputations}Z",
+                              );
 
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              raceData.name,
-                              style: TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(height: 4),
-                            Text(raceData.datePretty),
-                            SizedBox(height: 8),
-                            Text(
-                              "Race starts in ${days} days",
-                              style: TextStyle(color: Colors.redAccent),
-                            ),
+                              final raceStartLocal = raceStartUTC
+                                  .toLocal(); //conversion to local timezone is done client side (frontend), not server side (backend), because it depends on the user machine, not on the backend machine
+                              final raceStartLocalPretty =
+                                  "${raceStartLocal.hour.toString().padLeft(2, '0')}:"
+                                  "${raceStartLocal.minute.toString().padLeft(2, '0')}";
 
-                            Text(
-                              raceStartLocalPretty,
-                              style: TextStyle(color: Colors.redAccent),
-                            ),
-                          ],
-                        );
-                      },
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    raceData.name,
+                                    style: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(height: 4),
+                                  Text(raceData.datePretty),
+                                  SizedBox(height: 8),
+                                  Text(
+                                    "Race starts in ${days} days",
+                                    style: TextStyle(color: Colors.redAccent),
+                                  ),
+
+                                  Text(
+                                    raceStartLocalPretty,
+                                    style: TextStyle(color: Colors.redAccent),
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+
+                          FutureBuilder<RaceData>(
+                            future: nextQualiData,
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return Padding(
+                                  padding: const EdgeInsets.all(12),
+                                  child: Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                );
+                              }
+
+                              if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              }
+
+                              if (!snapshot.hasData) {
+                                return Text("No data");
+                              }
+
+                              final qualiData = snapshot.data!;
+                              final qualiDate = DateTime.parse(
+                                qualiData.dateComputations,
+                              );
+                              final now = DateTime.now();
+
+                              final days = qualiDate.difference(now).inDays;
+
+                              final qualiStartUTC = DateTime.parse(
+                                "${qualiData.dateComputations}T${qualiData.timeComputations}Z",
+                              );
+
+                              final qualiStartLocal = qualiStartUTC.toLocal();
+
+                              final qualiStartLocalPretty =
+                                  "${qualiStartLocal.hour.toString().padLeft(2, '0')}:"
+                                  "${qualiStartLocal.minute.toString().padLeft(2, '0')}";
+
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    qualiData.name,
+                                    style: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(height: 4),
+                                  Text(qualiData.datePretty),
+                                  SizedBox(height: 8),
+                                  Text(
+                                    "Race starts in ${days} days",
+                                    style: TextStyle(color: Colors.redAccent),
+                                  ),
+
+                                  Text(
+                                    qualiStartLocalPretty,
+                                    style: TextStyle(color: Colors.redAccent),
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                          const SizedBox(height: 8),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: List.generate(2, (index) {
+                              final bool isActive = _currentPage2 == index;
+                              return AnimatedContainer(
+                                duration: Duration(milliseconds: 250),
+                                margin: const EdgeInsets.symmetric(
+                                  horizontal: 4,
+                                ),
+                                width: isActive ? 10 : 6,
+                                height: 6,
+                                decoration: BoxDecoration(
+                                  color: isActive
+                                      ? Colors.redAccent
+                                      : Colors.grey,
+                                  borderRadius: BorderRadius.circular(3),
+                                ),
+                              );
+                            }),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),

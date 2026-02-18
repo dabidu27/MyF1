@@ -81,6 +81,16 @@ class ApiService {
     }
   }
 
+  static Future<RaceData> fetchNextQualiData() async {
+    final response = await http.get(Uri.parse('$apiBaseUrl/next_quali/data'));
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = jsonDecode(response.body);
+      return RaceData.fromJson(data);
+    } else {
+      throw Exception('Failed to load next quali data');
+    }
+  }
+
   static Future<List<Constructor>> fetchConstructorsStandings() async {
     final response = await http.get(
       Uri.parse('$apiBaseUrl/championship/constructors/standings'),
