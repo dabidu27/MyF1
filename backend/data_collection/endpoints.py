@@ -16,7 +16,7 @@ from fastapi_limiter.depends import RateLimiter
 from fastapi_limiter import FastAPILimiter
 from redis import asyncio as aioredis
 import json
-from cache_utils import getSecondsUntilRaceFinish
+from cache_utils import getSecondsUntilRaceFinish, getSecondsUntilQualiFinish
 import os
 
 generalLimiter = RateLimiter(
@@ -271,11 +271,10 @@ async def fetchNextQualiData(response: Response):
         response.headers["Cache-Control"] = f"public, max_age={remaining_ttl}"
         return json.loads(cached_data)
 
-    nextRaceData = await getNextRace()
-    nextRaceIso = nextRaceData[2]
-    ttl_seconds = getSecondsUntilRaceFinish(nextRaceIso)
-
     nextQualiData = await getNextQuali()
+    nextQualiIso = nextQualiData[2]
+    ttl_seconds = getSecondsUntilQualiFinish(nextQualiIso)
+
     responseData = RaceData(
         name=nextQualiData[0],
         datePretty=nextQualiData[1],
@@ -288,5 +287,5 @@ async def fetchNextQualiData(response: Response):
     )
 
     response.headers["X-Cache"] = "MISS"
-    response.headers["Cache-Control"] = f"public, max_age = {ttl_seconds}"
+    response.headers["Cache-Control"] = f"public, max_age={ttl_seconds}"
     return responseData
