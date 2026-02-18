@@ -252,29 +252,25 @@ class _HomeScreenState extends State<HomeScreen> {
                               );
                             },
                           ),
-                          const SizedBox(height: 8),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: List.generate(2, (index) {
-                              final bool isActive = _currentPage2 == index;
-                              return AnimatedContainer(
-                                duration: Duration(milliseconds: 250),
-                                margin: const EdgeInsets.symmetric(
-                                  horizontal: 4,
-                                ),
-                                width: isActive ? 10 : 6,
-                                height: 6,
-                                decoration: BoxDecoration(
-                                  color: isActive
-                                      ? Colors.redAccent
-                                      : Colors.grey,
-                                  borderRadius: BorderRadius.circular(3),
-                                ),
-                              );
-                            }),
-                          ),
                         ],
                       ),
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(2, (index) {
+                        final bool isActive = _currentPage2 == index;
+                        return AnimatedContainer(
+                          duration: Duration(milliseconds: 250),
+                          margin: const EdgeInsets.symmetric(horizontal: 4),
+                          width: isActive ? 10 : 6,
+                          height: 6,
+                          decoration: BoxDecoration(
+                            color: isActive ? Colors.redAccent : Colors.grey,
+                            borderRadius: BorderRadius.circular(3),
+                          ),
+                        );
+                      }),
                     ),
                   ],
                 ),
