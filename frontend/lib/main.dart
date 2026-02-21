@@ -111,7 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: TextStyle(fontSize: 16, color: Colors.grey),
                     ),
                     SizedBox(
-                      height: 130,
+                      height: 120,
                       child: PageView(
                         controller: _pageController2,
                         onPageChanged: (index) {
