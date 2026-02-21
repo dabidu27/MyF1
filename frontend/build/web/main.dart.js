@@ -65749,7 +65749,7 @@ q=l.x
 q===$&&A.a()
 p=t.F
 o=t.l7
-i=A.lC(new A.c6(B.bo,A.fM(A.c([h,A.jd(A.ajr(A.c([s,A.u0(new A.a8w(),q,r)],p),l.Q,new A.a8x(l)),130,k),B.dA,A.a1t(A.aeY(2,new A.a8y(l),!0,o),B.aG,B.hY,B.ab)],p),B.ag,B.aa,B.ab),k),k,new A.c7(i,B.o))
+i=A.lC(new A.c6(B.bo,A.fM(A.c([h,A.jd(A.ajr(A.c([s,A.u0(new A.a8w(),q,r)],p),l.Q,new A.a8x(l)),120,k),B.dA,A.a1t(A.aeY(2,new A.a8y(l),!0,o),B.aG,B.hY,B.ab)],p),B.ag,B.aa,B.ab),k),k,new A.c7(i,B.o))
 q=A.hv(16)
 s=A.a1t(A.c([A.bE("Last Race",A.cV(k,k,B.ex,k,k,k,k,k,k,k,k,16,k,k,k,k,k,!0,k,k,k,k,k,k,k,k)),A.aeK(B.kH,k)],p),B.aG,B.hZ,B.ab)
 h=A.jd(k,8,k)
