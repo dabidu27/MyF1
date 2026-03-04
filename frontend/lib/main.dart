@@ -148,7 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 raceData.dateComputations,
                               );
                               final now = DateTime.now();
-                              final days = raceDate.difference(now).inDays;
+                              final days = raceDate.difference(now).inDays + 1;
 
                               final raceStartUTC = DateTime.parse(
                                 "${raceData.dateComputations}T${raceData.timeComputations}Z",
@@ -214,7 +214,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               );
                               final now = DateTime.now();
 
-                              final days = qualiDate.difference(now).inDays;
+                              final days = qualiDate.difference(now).inDays + 1;
 
                               final qualiStartUTC = DateTime.parse(
                                 "${qualiData.dateComputations}T${qualiData.timeComputations}Z",
