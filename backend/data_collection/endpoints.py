@@ -297,13 +297,13 @@ async def nuke_cache(
     cache_key: str, token: str = None
 ):  # in fastapi, if we add to the function a param that is not in the url path, it automatically assumes it is a query param (the part of the url after ?)
 
-    password = os.environ.get("MY_PASSWORD")
+    # password = os.environ.get("MY_PASSWORD")
 
-    print(f"DEBUG: Token received: '{token}'")
-    print(f"DEBUG: Password found in env: '{password is not None}'")
+    # print(f"DEBUG: Token received: '{token}'")
+    # print(f"DEBUG: Password found in env: '{password is not None}'")
 
-    if token != str(password):
-        raise HTTPException(status_code=401, detail="Access denied")
+    # if token != str(password):
+    #     raise HTTPException(status_code=401, detail="Access denied")
     redis = FastAPICache.get_backend().redis
     result = await redis.delete(cache_key)
     if result == 1:
