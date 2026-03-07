@@ -18,6 +18,7 @@ from redis import asyncio as aioredis
 import json
 from cache_utils import getSecondsUntilRaceFinish, getSecondsUntilQualiFinish
 import os
+from dotenv import load_dotenv
 
 generalLimiter = RateLimiter(
     times=60, seconds=60
@@ -297,6 +298,10 @@ async def nuke_cache(
 ):  # in fastapi, if we add to the function a param that is not in the url path, it automatically assumes it is a query param (the part of the url after ?)
 
     password = os.environ.get("MY_PASSWORD")
+
+    print(f"DEBUG: Token received: '{token}'")
+    print(f"DEBUG: Password found in env: '{password is not None}'")
+
     if token != str(password):
         raise HTTPException(status_code=401, detail="Access denied")
     redis = FastAPICache.get_backend().redis
