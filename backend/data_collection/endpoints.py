@@ -1,4 +1,4 @@
-from fastapi import FastAPI, status, Response, Depends, Request
+from fastapi import FastAPI, status, Response, Depends, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.encoders import jsonable_encoder
 from models import Drivers, DriversWithPoints, RaceData, ConstructorsStandings
@@ -292,8 +292,16 @@ async def fetchNextQualiData(response: Response):
 
 
 @app.get("/nuke-cache/{cache_key}")
-async def nuke_cache(cache_key: str):
+async def nuke_cache(
+    cache_key: str, token: str = None
+):  # in fastapi, if we add to the function a param that is not in the url path, it automatically assumes it is a query param (the part of the url after ?)
 
+    password = os.environ.get("MY_PASSWORD")
+    if token != password:
+        raise HTTPException(status_code=401, detail="Nice try! Invalid token.")
     redis = FastAPICache.get_backend().redis
-    await redis.delete(cache_key)
-    return {"message": f"Cache deleted for {cache_key}"}
+    result = await redis.delete(cache_key)
+    if result == 1:
+        return {"message": f"Cache deleted for {cache_key}"}
+    else:
+        return {"message": f"Could not delete cache for {cache_key}"}
