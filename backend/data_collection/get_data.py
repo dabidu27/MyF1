@@ -123,7 +123,7 @@ def _getNextRace():
     races = ergast.get_race_schedule(season=2026)
     races["raceDate"] = pd.to_datetime(races["raceDate"], utc=True)
     now = datetime.now(timezone.utc)
-    next_races = races[races["raceDate"] >= now]
+    next_races = races[races["raceDate"] > now]
     next_races = next_races.sort_values("raceDate", ascending=True)
     date = next_races.iloc[0]["raceDate"]
     date_str = date.strftime("%d %B %Y")
@@ -141,7 +141,7 @@ def _getNextQuali():
     quali = races[["season", "round", "raceName", "qualifyingDate", "qualifyingTime"]]
     quali["qualifyingDate"] = pd.to_datetime(quali["qualifyingDate"], utc=True)
     now = datetime.now(timezone.utc)
-    futureQualis = quali[quali["qualifyingDate"] >= now]
+    futureQualis = quali[quali["qualifyingDate"] > now]
     futureQualis = futureQualis.sort_values("qualifyingDate", ascending=True)
     date = futureQualis.iloc[0]["qualifyingDate"]
     date_str = date.strftime("%d %B %Y")

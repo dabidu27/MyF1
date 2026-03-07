@@ -289,3 +289,11 @@ async def fetchNextQualiData(response: Response):
     response.headers["X-Cache"] = "MISS"
     response.headers["Cache-Control"] = f"public, max_age={ttl_seconds}"
     return responseData
+
+
+@app.get("/nuke-cache/{cache_key}")
+async def nuke_cache(cache_key: str):
+
+    redis = FastAPICache.get_backend().redis
+    await redis.delete(cache_key)
+    return {"message": f"Cache deleted for {cache_key}"}
