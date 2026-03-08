@@ -19,7 +19,8 @@ def getSecondsUntilRaceFinish(nextRaceIso):
         now = datetime.now(timezone.utc)
         remaining = (raceFinish - now).total_seconds()
 
-        return int(remaining)
+        # avoid a negative remaining value
+        return max(int(remaining), 3600)
 
     except Exception as e:
         print(f"TTL Calculation Error: {e}")
@@ -44,7 +45,7 @@ def getSecondsUntilQualiFinish(nextQualiIso):
         now = datetime.now(timezone.utc)
         remaining = (qualiFinish - now).total_seconds()
 
-        return int(remaining)
+        return max(int(remaining), 3600)
 
     except Exception as e:
         print(f"TTL Calculation Error: {e}")
