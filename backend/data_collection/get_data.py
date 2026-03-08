@@ -37,7 +37,7 @@ async def getNextQuali():
 def _loadStandings():
 
     ergast = Ergast()
-    races = ergast.get_race_schedule(season=2025)
+    races = ergast.get_race_schedule(season=2026)
     races["raceDate"] = pd.to_datetime(races["raceDate"], utc=True)
     now = datetime.now(timezone.utc)
     past_races = races[races["raceDate"] <= now]
@@ -61,7 +61,7 @@ def _loadStandings():
 def _loadChampionshipStandings():
 
     ergast = Ergast()
-    standings = ergast.get_driver_standings(season=2025)
+    standings = ergast.get_driver_standings(season=2026)
     standings_df = standings.content[0][
         ["givenName", "familyName", "constructorNames", "points"]
     ]
@@ -82,7 +82,7 @@ def _loadChampionshipStandings():
 def _loadConstructorsChampionshipStandings():
 
     ergast = Ergast()
-    standings = ergast.get_constructor_standings(season=2025)
+    standings = ergast.get_constructor_standings(season=2026)
     standings_df = standings.content[0][["points", "constructorName"]]
     teams = [
         (row.constructorName, int(row.points))
