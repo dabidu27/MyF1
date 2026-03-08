@@ -45,7 +45,7 @@ def _loadStandings():
     round = past_races.iloc[0]["round"]
     name = past_races.iloc[0]["raceName"]
 
-    session = f1.get_session(2025, round, "Race")
+    session = f1.get_session(2026, round, "Race")
     session.load()
 
     standings = session.results[["FullName", "TeamName"]]
