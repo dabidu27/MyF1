@@ -46,7 +46,7 @@ def _loadStandings():
     name = past_races.iloc[0]["raceName"]
 
     session = f1.get_session(2026, round, "Race")
-    session.load()
+    session.load(telemetry=False, weather=False, messages=False)
 
     standings = session.results[["FullName", "TeamName"]]
 
